@@ -27,7 +27,11 @@ def access_gpp():
 
 def access_accessIT():
     try:
-        driver.get("https://accessit.bASF.com")  # Reemplaza con la URL correcta
+        driver.get("https://accessit.basf.net/irj/portal/accessit")  # Reemplaza con la URL correcta
+        time.sleep(2)
+        # Encuentra el botón "Log In" y haz clic en él
+        login_button = driver.find_element("xpath", '//*[@id="certButtonMain"]')  # Ajusta el XPath según sea necesario
+        login_button.click()
         time.sleep(2)
         return driver.title
     except (WebDriverException, TimeoutException) as e:
@@ -36,7 +40,7 @@ def access_accessIT():
 
 def access_hr_kiosk():
     try:
-        driver.get("https://hrkiosk.bASF.com")  # Reemplaza con la URL correcta
+        driver.get("https://hp1r3.bcs.de/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fcom.basfits.hr!2fgl!2flogon_page!2fcom.basfits.hr.global.iv.ep.java.login?ume.logon.locale=es_ES&region=lu&bandwith=medium&ip=10.12.20.4&letitsnow=false")  # Reemplaza con la URL correcta
         time.sleep(2)
         return driver.title
     except (WebDriverException, TimeoutException) as e:
@@ -45,7 +49,7 @@ def access_hr_kiosk():
 
 def access_service4you():
     try:
-        driver.get("https://service4you.bASF.com")  # Reemplaza con la URL correcta
+        driver.get("https://service4you.intranet.basf.com/esc")  # Reemplaza con la URL correcta
         time.sleep(2)
         return driver.title
     except (WebDriverException, TimeoutException) as e:
@@ -56,7 +60,7 @@ def access_service4you():
 if __name__ == "__main__":
     urls = {
         "BASF Intranet Home": access_bASF_intranet(),
-        "GPP": access_gpp(),
+        #"GPP": access_gpp(),
         "AccessIT": access_accessIT(),
         "HR Kiosk": access_hr_kiosk(),
         "Service4You": access_service4you(),
