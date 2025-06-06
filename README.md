@@ -1,2 +1,0 @@
-# UATs
-UATs automation
