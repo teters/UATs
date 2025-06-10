@@ -1,0 +1,7 @@
+Para empaquetar
+npm run package 
+
+Para correr
+en una terminal entrar a uats-app y correr npm start
+y en otra terminal, en UATs correr:
+npm run electron

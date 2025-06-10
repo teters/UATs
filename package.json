@@ -2,9 +2,11 @@
   "name": "uats-app",
   "version": "1.0.0",
   "main": "main.js",
+  "description": "Uats automation",
+  "author": "Connectivity platform americas",  
   "devDependencies": {
     "electron": "^36.4.0",
-    "electron-builder": "^23.6.0"
+    "electron-builder": "^26.0.12"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -13,7 +15,7 @@
     "package": "electron-builder"
   },
   "build": {
-    "appId": "com.yourcompany.uats",
+    "appId": "com.basf.uats",
     "productName": "UATs App",
     "files": [
       "build/**/*",
@@ -21,6 +23,11 @@
     ],
     "directories": {
       "output": "dist"
-    }
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "logo3.ico"
+    },
+    "asar": true 
   }
 }
