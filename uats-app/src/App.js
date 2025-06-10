@@ -1,24 +1,19 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const runCommand = () => {
+    window.electron.sendCommand('TESTUATCOMPLETED.cmd');
+  };
+
+  useEffect(() => {
+    window.electron.onCommandOutput((event, output) => {
+      console.log(output); // Manejar la salida del comando
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className="app"><h1 className="title">WAN User Acceptance Tests</h1><button className="run-button" onClick={runCommand}>RUN</button></div>
   );
 }
 

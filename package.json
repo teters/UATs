@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "main.js",
   "description": "Uats automation",
-  "author": "Connectivity platform americas",  
+  "author": "Connectivity platform americas",
   "devDependencies": {
+    "buffer": "^6.0.3",
     "electron": "^36.4.0",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^26.0.12",
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -28,6 +31,6 @@
       "target": "nsis",
       "icon": "logo3.ico"
     },
-    "asar": true 
+    "asar": true
   }
 }
