@@ -16,7 +16,7 @@ function createWindow() {
   win.loadURL('http://localhost:3000'); // Cargar la app de React
 
   ipcMain.on('run-command', (event) => {
-    exec('TESTUATCOMPLETED.cmd', (error, stdout, stderr) => {
+    exec('cmd.exe /c TESTUATCOMPLETED.cmd', { windowsHide: false }, (error, stdout, stderr) => {
       if (error) {
         event.reply('command-output', `Error: ${error.message}`);
         return;
