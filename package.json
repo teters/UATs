@@ -2,27 +2,26 @@
   "name": "uats-app",
   "version": "1.0.0",
   "main": "main.js",
-  "description": "Uats automation",
+  "description": "UATs automation",
   "author": "Connectivity platform americas",
-  "devDependencies": {
-    "buffer": "^6.0.3",
-    "electron": "^36.4.0",
-    "electron-builder": "^26.0.12",
-    "path-browserify": "^1.0.1",
-    "stream-browserify": "^3.0.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "electron": "electron main.js",
-    "build": "react-scripts build",
-    "package": "electron-builder"
+    "start": "cd uats-app && npm start",
+    "react-build": "cd uats-app && npm run build",
+    "electron": "electron .",
+    "package": "npm run react-build && electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^36.4.0",
+    "electron-builder": "^26.0.12"
   },
   "build": {
     "appId": "com.basf.uats",
     "productName": "UATs App",
     "files": [
-      "build/**/*",
-      "main.js"
+      "main.js",
+      "preload.js",
+      "TESTUATCOMPLETED.cmd",
+      "uats-app/build/**/*"
     ],
     "directories": {
       "output": "dist"
@@ -33,4 +32,7 @@
     },
     "asar": true
   }
+  
+
 }
+
