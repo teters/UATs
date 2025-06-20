@@ -13,10 +13,13 @@ function createWindow() {
     },
   });
 
-  win.loadURL('http://localhost:3000'); // Cargar la app de React
+  win.loadFile(path.join(__dirname, 'uats-app', 'build', 'index.html'));
+  //win.webContents.openDevTools(); // temporal
+
 
   ipcMain.on('run-command', (event) => {
-    exec('cmd.exe /c TESTUATCOMPLETED.cmd', { windowsHide: false }, (error, stdout, stderr) => {
+    const cmdPath = path.join(__dirname, 'TESTUATCOMPLETED.cmd');
+    exec(`cmd.exe /c "${cmdPath}"`, { windowsHide: false }, (error, stdout, stderr) => {
       if (error) {
         event.reply('command-output', `Error: ${error.message}`);
         return;
@@ -28,6 +31,7 @@ function createWindow() {
       event.reply('command-output', `stdout: ${stdout}`);
     });
   });
+
 }
 
 app.whenReady().then(createWindow);
