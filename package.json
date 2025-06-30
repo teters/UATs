@@ -30,7 +30,9 @@
       "target": "nsis",
       "icon": "logo3.ico"
     },
-    "asar": true
+    "asar": true,
+    "asarUnpack": ["**/*.cmd"]
+
   }
   
 

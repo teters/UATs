@@ -7,11 +7,13 @@ function App() {
     window.electron.sendCommand('TESTUATCOMPLETED.cmd');
   };
 
+
   useEffect(() => {
     window.electron.onCommandOutput((event, output) => {
-      console.log(output); // Manejar la salida del comando
+      console.log('Salida del comando:', output);
     });
   }, []);
+
 
   const [formData, setFormData] = useState({
     project: '',
@@ -22,8 +24,10 @@ function App() {
     siteHas: [],
     connection: '',
     printing:'',
+    testType:'',
 
   });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -43,6 +47,23 @@ function App() {
       };
     });
   };
+
+  const getLinkOptions = () => {
+    switch (formData.siteCategory) {
+      case 'Gold':
+        return ['1st MPLS link', '2nd MPLS link', '1st INET link', '2nd INET link'];
+      case 'Silver':
+      case 'Silver+':
+        return ['MPLS link', 'INET link'];
+      case 'Bronze':
+        return ['MPLS link'];
+      case 'Copper':
+        return ['INET link'];
+      default:
+        return [];
+    }
+  };
+
   const projectRef = useRef(null);
   const siteIdRef = useRef(null);
   const dateRef = useRef(null);
@@ -70,10 +91,6 @@ function App() {
   const iptOverallResult = iptResults.every(result => result === 'pass') ? 'PASS' : 'FAIL';
 
   const iptEnabled = formData.siteHas.includes('IPT/FAX') || formData.siteHas.includes('*OneVoice');
-
-
-  
-
 
 
 
@@ -290,6 +307,37 @@ function App() {
               
             </select>
           </div>
+          <div className="form-group">
+            <label htmlFor="testType">Test type:</label>
+            <select
+              id="testType"
+              name="testType"
+              value={formData.testType}
+              onChange={handleInputChange}
+            >
+              <option value="Baseline">Baseline</option>
+              <option value="Migration">Migration</option>
+              
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="linkType">Link:</label>
+            <select
+              id="linkType"
+              name="linkType"
+              value={formData.linkType}
+              onChange={handleInputChange}
+              disabled={getLinkOptions().length === 0}
+            >
+              <option value="" disabled>Select Link</option>
+              {getLinkOptions().map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+
     
       </form>
       <div className="table-section">

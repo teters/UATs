@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { exec } = require('child_process');
 const path = require('path');
 
@@ -18,19 +18,30 @@ function createWindow() {
 
 
   ipcMain.on('run-command', (event) => {
-    const cmdPath = path.join(__dirname, 'TESTUATCOMPLETED.cmd');
+    const cmdPath = path.join(process.resourcesPath,'app.asar.unpacked', 'TESTUATCOMPLETED.cmd');
+    console.log('[Electron] Ejecutando:', cmdPath);
+
     exec(`cmd.exe /c "${cmdPath}"`, { windowsHide: false }, (error, stdout, stderr) => {
+      console.log('[Electron] Resultado recibido');
+
       if (error) {
-        event.reply('command-output', `Error: ${error.message}`);
+        console.error('[Electron] Error:', error.message);
         return;
       }
       if (stderr) {
-        event.reply('command-output', `stderr: ${stderr}`);
+        console.error('[Electron] stderr:', stderr);
         return;
       }
+      console.log('[Electron] stdout:', stdout);
       event.reply('command-output', `stdout: ${stdout}`);
+      
+
+      const csvPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'results.csv');
+      shell.openPath(csvPath);
+
     });
   });
+
 
 }
 
