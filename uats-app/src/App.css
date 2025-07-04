@@ -171,3 +171,31 @@ select:hover {
   pointer-events: none;
   user-select: none;
 }
+
+.comments-group {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 25px;
+}
+
+.comments-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.comments-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.comments-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 5px #3b82f6;
+}

@@ -14,7 +14,7 @@ function createWindow() {
   });
 
   win.loadFile(path.join(__dirname, 'uats-app', 'build', 'index.html'));
-  //win.webContents.openDevTools(); // temporal
+  win.webContents.openDevTools(); // temporal
 
 
   ipcMain.on('run-command', (event) => {
