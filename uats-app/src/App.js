@@ -25,6 +25,8 @@ function App() {
     connection: '',
     printing:'',
     testType:'',
+    linkType: '',
+    comments: '',
 
   });
 
@@ -91,6 +93,56 @@ function App() {
   const iptOverallResult = iptResults.every(result => result === 'pass') ? 'PASS' : 'FAIL';
 
   const iptEnabled = formData.siteHas.includes('IPT/FAX') || formData.siteHas.includes('*OneVoice');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const {
+      project,
+      siteId,
+      date,
+      testerName,
+      siteCategory,
+      siteHas,
+      connection,
+      printing,
+      testType,
+      linkType,
+      comments
+    } = formData;
+
+    const now = new Date();
+    const formattedDate = now.toISOString().replace(/[:.]/g, '-');
+    const fileName = `UAT_${siteId}_${formattedDate}.csv`;
+
+    const csvContent = 
+  `Field,Value
+  Project,${project}
+  Site ID,${siteId}
+  Date,${date}
+  Tester Name,${testerName}
+  Site Category,${siteCategory}
+  Site Has,${siteHas.join(' | ')}
+  Connection,${connection}
+  Printing,${printing}
+  Test Type,${testType}
+  Link Type,${linkType}
+  Comments,${comments}
+  `;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    console.log("Archivo generado:", fileName);
+  };
+
 
 
 
@@ -393,6 +445,20 @@ function App() {
       </p>
 
       <button className="run-button" onClick={runCommand}>RUN</button>
+      <div className="form-group comments-group">
+        <label htmlFor="comments" className="comments-label">Local app test /Additional remarks/feedback on anomalies:</label>
+        <textarea
+          id="comments"
+          name="comments"
+          value={formData.comments}
+          onChange={handleInputChange}
+          rows="4"
+          placeholder="Write here..."
+          className="comments-textarea"
+        />
+      </div>
+      <button className="run-button" onClick={handleSubmit}>SUBMIT</button>
+
     </div>
   );
 }
