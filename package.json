@@ -27,7 +27,7 @@
       "output": "dist"
     },
     "win": {
-      "target": "nsis",
+      "target": "portable",
       "icon": "logo3.ico"
     },
     "asar": true,

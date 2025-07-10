@@ -18,7 +18,6 @@ function App() {
   const [formData, setFormData] = useState({
     project: '',
     siteId: '',
-    date: '',
     testerName: '',
     siteCategory: '',
     siteHas: [],
@@ -27,6 +26,7 @@ function App() {
     testType:'',
     linkType: '',
     comments: '',
+    overallAssesment: '',
 
   });
 
@@ -68,7 +68,6 @@ function App() {
 
   const projectRef = useRef(null);
   const siteIdRef = useRef(null);
-  const dateRef = useRef(null);
   const testerNameRef = useRef(null);
   
   
@@ -100,7 +99,6 @@ function App() {
     const {
       project,
       siteId,
-      date,
       testerName,
       siteCategory,
       siteHas,
@@ -108,7 +106,8 @@ function App() {
       printing,
       testType,
       linkType,
-      comments
+      comments,
+      overallAssesment
     } = formData;
 
     const now = new Date();
@@ -119,7 +118,6 @@ function App() {
   `Field,Value
   Project,${project}
   Site ID,${siteId}
-  Date,${date}
   Tester Name,${testerName}
   Site Category,${siteCategory}
   Site Has,${siteHas.join(' | ')}
@@ -128,6 +126,7 @@ function App() {
   Test Type,${testType}
   Link Type,${linkType}
   Comments,${comments}
+  OVERALL ASSESMENT,${overallAssesment}
   `;
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -151,10 +150,10 @@ function App() {
 
   return (
     <div className="app">
-      <h1 className="title">WAN User Acceptance Tests</h1>
+      <h1 className="title">User Acceptance Tests</h1>
       <div className="paragraphs">
         <p className="description">
-            The following tests need to be performed minimum two weeks before the migration for baselining purposes (*) and on the day of migration. Date and 
+            The following tests need to be performed 30 minutes before the migration for baselining purposes (*) and after the migration. Date and 
           time of test to be coordinated by the BASF Regional WAN project manager/coordinator and communicated to the local user who will be performing 
           the test. 
         </p>
@@ -234,22 +233,11 @@ function App() {
               placeholder="Enter site ID" 
               value={formData.siteId} 
               onChange={handleInputChange} 
-              onKeyDown={(e)=>handleKeyDown(e,dateRef)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="date">Date:</label>
-            <input 
-              ref={dateRef}
-              type="date" 
-              id="date" 
-              name="date" 
-              value={formData.date} 
-              onChange={handleInputChange}
               onKeyDown={(e)=>handleKeyDown(e,testerNameRef)}
             />
           </div>
+
+          
 
           <div className="form-group">
             <label htmlFor="testerName">Tester Name:</label>
@@ -269,7 +257,7 @@ function App() {
               value={formData.siteCategory}
               onChange={handleInputChange}
             >
-              <option value="">Select category</option>
+              <option value="" disabled hidden style={{ color: '#ccc' }}>Select category</option>
               <option value="Gold">Gold</option>
               <option value="Silver+">Silver+</option>
               <option value="Silver">Silver</option>
@@ -346,19 +334,7 @@ function App() {
               
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="printing">Does printing work?</label>
-            <select
-              id="printing"
-              name="printing"
-              value={formData.printing}
-              onChange={handleInputChange}
-            >
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-              
-            </select>
-          </div>
+          
           <div className="form-group">
             <label htmlFor="testType">Test type:</label>
             <select
@@ -392,6 +368,32 @@ function App() {
 
     
       </form>
+      
+      <p className="description">
+          <strong>
+            The following button automates the following tests...:
+          </strong>
+        </p>
+
+      <button className="run-button" onClick={runCommand}>RUN</button>
+      
+      <form className="form">
+        <div className="form-group">
+              <label htmlFor="printing">Does printing work?</label>
+              <select
+                id="printing"
+                name="printing"
+                value={formData.printing}
+                onChange={handleInputChange}
+              >
+                <option value=""></option>
+                <option value="PASS">Yes</option>
+                <option value="FAIL">No</option>
+                
+              </select>
+        </div>
+      </form>
+
       <div className="table-section">
         <h2 className="form-title">IPT test (only applicable if site has IPT phones/OneVoice)</h2>
         <table className={`ipt-table ${!iptEnabled ? 'disabled' : ''}`}>
@@ -440,23 +442,39 @@ function App() {
 
         </table>
       </div>
-      <p style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '16px' }}>
-        The following button automates the following tests:
-      </p>
+      
+      <form className="form">
+        <div className="form-group comments-group">
+          <label htmlFor="comments" className="comments-label">Local app test /Additional remarks/feedback on anomalies:</label>
+          <textarea
+            id="comments"
+            name="comments"
+            value={formData.comments}
+            onChange={handleInputChange}
+            rows="4"
+            placeholder="Write here..."
+            className="comments-textarea"
+          />
+        </div>
+      </form>
+      <form className="form">
+        <div className="form-group">
+              <label htmlFor="OverallAssesment" style={{ fontWeight: 'bold' }}>Overall User Assesment:</label>
+              <select
+                id="OverallAssesment"
+                name="overallAssesment"
+                value={formData.overallAssesment}
+                onChange={handleInputChange}
+              >
+                <option value=""></option>
+                <option value="Pass">Pass</option>
+                <option value="Fail">Fail</option>
+                
+              </select>
+        </div>
+      </form>
 
-      <button className="run-button" onClick={runCommand}>RUN</button>
-      <div className="form-group comments-group">
-        <label htmlFor="comments" className="comments-label">Local app test /Additional remarks/feedback on anomalies:</label>
-        <textarea
-          id="comments"
-          name="comments"
-          value={formData.comments}
-          onChange={handleInputChange}
-          rows="4"
-          placeholder="Write here..."
-          className="comments-textarea"
-        />
-      </div>
+
       <button className="run-button" onClick={handleSubmit}>SUBMIT</button>
 
     </div>
