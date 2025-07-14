@@ -3,6 +3,46 @@ import './App.css';
 
 function App() {
 
+  const [testResults, setTestResults] = useState({});
+
+
+  const runAllTests = async () => {
+    const tests = [
+      'test1_sap.cmd',
+      'test2_intranet.js',
+      'test3_internet.js',
+      'test4_teams.js',
+      'test5_outlook.cmd',
+      'test6_office.js',
+      'test7_sharepoint.js',
+    ];
+
+    const results = {};
+
+    for (const test of tests) {
+      const result = await window.electron.runTest(test);
+      results[test] = result;
+    }
+
+    setTestResults(results);
+    console.log('Resultados:', results);
+  };
+
+  // Para parsear los resultados y mostrar nombre y estado
+  const parsedResults = Object.entries(testResults).map(([file, output]) => {
+    // output es algo tipo "Intranet,PASS"
+    if (output.includes(',')) {
+      const [name, status] = output.split(',');
+      return { name, status };
+    } else {
+      // fallback: sacar la extensión y poner el nombre del archivo
+      const name = file.replace(/\.(cmd|js)$/, '');
+      const status = output;
+      return { name, status };
+    }
+  });
+
+
   const runCommand = () => {
     window.electron.sendCommand('TESTUATCOMPLETED.cmd');
   };
@@ -23,6 +63,7 @@ function App() {
     siteHas: [],
     connection: '',
     printing:'',
+    mobd: '',
     testType:'',
     linkType: '',
     comments: '',
@@ -104,6 +145,7 @@ function App() {
       siteHas,
       connection,
       printing,
+      mobd,
       testType,
       linkType,
       comments,
@@ -112,7 +154,7 @@ function App() {
 
     const now = new Date();
     const formattedDate = now.toISOString().replace(/[:.]/g, '-');
-    const fileName = `UAT_${siteId}_${formattedDate}.csv`;
+    const fileName = `UAT_${testType}_${siteId}_${formattedDate}.csv`;
 
     const csvContent = 
   `Field,Value
@@ -123,6 +165,7 @@ function App() {
   Site Has,${siteHas.join(' | ')}
   Connection,${connection}
   Printing,${printing}
+  MobD,${mobd}
   Test Type,${testType}
   Link Type,${linkType}
   Comments,${comments}
@@ -375,8 +418,18 @@ function App() {
           </strong>
         </p>
 
-      <button className="run-button" onClick={runCommand}>RUN</button>
-      
+      <button className="run-button" onClick={runAllTests}>RUN</button>
+      <div className="test-results">
+        {parsedResults.map((result, index) => (
+          <div key={index} className={`result-item fade-in ${result.status === 'PASS' ? 'pass' : 'fail'}`}>
+            <span className="test-name">{result.name}</span>
+            <span className="status-icon">
+              {result.status === 'PASS' ? '✅' : '❌'}
+            </span>
+          </div>
+        ))}
+      </div>
+
       <form className="form">
         <div className="form-group">
               <label htmlFor="printing">Does printing work?</label>
@@ -384,6 +437,23 @@ function App() {
                 id="printing"
                 name="printing"
                 value={formData.printing}
+                onChange={handleInputChange}
+              >
+                <option value=""></option>
+                <option value="PASS">Yes</option>
+                <option value="FAIL">No</option>
+                
+              </select>
+        </div>
+      </form>
+
+      <form className="form">
+        <div className="form-group">
+              <label htmlFor="mobd">Does MobD work on mobile phones?</label>
+              <select
+                id="mobd"
+                name="mobd"
+                value={formData.mobd}
                 onChange={handleInputChange}
               >
                 <option value=""></option>

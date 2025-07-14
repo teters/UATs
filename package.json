@@ -21,7 +21,9 @@
       "main.js",
       "preload.js",
       "TESTUATCOMPLETED.cmd",
-      "uats-app/build/**/*"
+      "uats-app/build/**/*",
+      "tests/*.cmd",
+      "tests/*.js"
     ],
     "directories": {
       "output": "dist"
@@ -31,10 +33,14 @@
       "icon": "logo3.ico"
     },
     "asar": true,
-    "asarUnpack": ["**/*.cmd"]
-
+    "asarUnpack": [
+      "**/*.cmd",
+      "tests/*.cmd",
+      "tests/*.js"
+    ]
+  },
+  "dependencies": {
+    "edge-paths": "^3.0.5",
+    "puppeteer": "^24.12.1"
   }
-  
-
 }
-
